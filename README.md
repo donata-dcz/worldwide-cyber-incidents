@@ -34,8 +34,8 @@ The NGO needed a more intuitive and visually appealing way to visualize global c
 ## Installation
 
 ```bash
-git clone git@github.com:EpitechPGE2-2025/G-EPI-300-PAR-3-2-projectweek-14.git
-cd G-EPI-300-PAR-3-2-projectweek-14
+git clone git@github.com:donata-dcz/worldwide-cyber-incidents.git
+cd worldwide-cyber-incidents
 npm install
 npm run dev
 ```
