@@ -3,21 +3,20 @@ import type { TimelineProps } from "../types/incidents"
 
 export default function Timeline({ incidents }: TimelineProps) {
   const sortedIncidents = useMemo(() => {
-    if (!incidents || incidents.length === 0) return [];
-
+    if (!incidents || incidents.length === 0)
+      return [];
     const validIncidents = incidents.filter(inc => {
       const dateStr = inc.event.startDate || inc.event.date;
-      if (!dateStr) return false;
-      
+      if (!dateStr)
+        return false;
       const timestamp = new Date(dateStr).getTime();
-      if (isNaN(timestamp)) return false;
-
+      if (isNaN(timestamp))
+        return false;
       const year = new Date(dateStr).getFullYear();
-      if (year < 2000 || year > 2030) return false;
-      
+      if (year < 2000 || year > 2030)
+        return false;
       return true;
     });
-    
     return validIncidents.sort((a, b) => {
       const dateA = a.event.startDate || a.event.date;
       const dateB = b.event.startDate || b.event.date;
@@ -28,7 +27,6 @@ export default function Timeline({ incidents }: TimelineProps) {
   const dateRange = useMemo(() => {
     if (sortedIncidents.length === 0)
       return { min: null, max: null };
-    
     const dates = sortedIncidents.map(inc => {
       const date = inc.event.startDate || inc.event.date;
       return new Date(date).getTime();
@@ -38,7 +36,6 @@ export default function Timeline({ incidents }: TimelineProps) {
     const maxDate = Math.max(...dates);
     const range = maxDate - minDate;
     const padding = range > 0 ? range * 0.1 : 7 * 24 * 60 * 60 * 1000;
-    
     return {
       min: new Date(minDate - padding),
       max: new Date(maxDate + padding)
@@ -46,28 +43,31 @@ export default function Timeline({ incidents }: TimelineProps) {
   }, [sortedIncidents]);
 
   const getPositionFromDate = (dateString: string) => {
-    if (!dateRange.min || !dateRange.max) return 50;
-    
+    if (!dateRange.min || !dateRange.max)
+      return 50;
     const date = new Date(dateString).getTime();
     const minTime = dateRange.min.getTime();
     const maxTime = dateRange.max.getTime();
     const range = maxTime - minTime;
-    
-    if (range === 0) return 50;
-    
+    if (range === 0)
+      return 50;
     return ((date - minTime) / range) * 100;
   };
 
   const getAttackColor = (type: string) => {
     const typeLower = type.toLowerCase();
-    if (typeLower.includes("phishing")) return "#ff6b6b";
-    if (typeLower.includes("ddos")) return "#4ecdc4";
-    if (typeLower.includes("malware")) return "#45b7d1";
-    if (typeLower.includes("ransomware")) return "#96ceb4";
-    if (typeLower.includes("data breach")) return "#feca57";
+    if (typeLower.includes("phishing"))
+      return "#ff6b6b";
+    if (typeLower.includes("ddos"))
+      return "#4ecdc4";
+    if (typeLower.includes("malware"))
+      return "#45b7d1";
+    if (typeLower.includes("ransomware"))
+      return "#96ceb4";
+    if (typeLower.includes("data breach"))
+      return "#feca57";
     return "#778ca3";
   };
-
   if (sortedIncidents.length === 0) {
     return (
       <div style={{ 
@@ -80,7 +80,6 @@ export default function Timeline({ incidents }: TimelineProps) {
       </div>
     );
   }
-
   return (
     <div style={{ 
       position: "relative", 
@@ -100,7 +99,6 @@ export default function Timeline({ incidents }: TimelineProps) {
         transform: "translateY(-50%)",
         borderRadius: "2px"
       }} />
-
       {dateRange.min && dateRange.max && (
         <>
           <div style={{
@@ -125,7 +123,6 @@ export default function Timeline({ incidents }: TimelineProps) {
           </div>
         </>
       )}
-
       <div style={{
         position: "absolute",
         left: "60px",
@@ -139,7 +136,6 @@ export default function Timeline({ incidents }: TimelineProps) {
           const position = getPositionFromDate(dateStr);
           const attackType = incident.attack.type || "Unknown";
           const date = new Date(dateStr);
-          
           return (
             <div
               key={`${incident.id}-${index}`}
@@ -198,7 +194,6 @@ export default function Timeline({ incidents }: TimelineProps) {
           );
         })}
       </div>
-      
       <style>
         {`
           .timeline-marker:hover {
@@ -211,8 +206,13 @@ export default function Timeline({ incidents }: TimelineProps) {
           
           @media (max-width: 768px) {
             .timeline-marker {
-              width: 10px !important;
-              height: 10px !important;
+              width: 8px !important;
+              height: 8px !important;
+              border: 1.5px solid #fff !important;
+            }
+            
+            .timeline-tooltip {
+              display: none !important;
             }
           }
         `}
