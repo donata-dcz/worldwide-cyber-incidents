@@ -34,7 +34,6 @@ const countIncidentsByCountryISO3 = (data: Incidents[]) => {
   return counts;
 };
 
-// Mapping des régions vers les pays (ISO3)
 const regionCountries: Record<string, string[]> = {
   'Europe': ['FRA', 'DEU', 'GBR', 'ITA', 'ESP', 'POL', 'ROU', 'NLD', 'BEL', 'GRC', 'CZE', 'PRT', 'HUN', 'SWE', 'AUT', 'BGR', 'DNK', 'FIN', 'SVK', 'IRL', 'HRV', 'LTU', 'SVN', 'LVA', 'EST', 'CYP', 'LUX', 'MLT', 'NOR', 'CHE', 'ISL', 'ALB', 'MKD', 'SRB', 'BIH', 'MNE', 'UKR', 'BLR', 'MDA'],
   'North America': ['USA', 'CAN', 'MEX', 'GTM', 'CUB', 'HTI', 'DOM', 'HND', 'NIC', 'SLV', 'CRI', 'PAN', 'JAM', 'TTO', 'BHS', 'BRB'],
@@ -45,7 +44,6 @@ const regionCountries: Record<string, string[]> = {
   'East Asia': ['CHN', 'JPN', 'KOR', 'TWN', 'MNG', 'PRK', 'HKG', 'MAC', 'VNM', 'THA', 'MMR', 'KHM', 'LAO', 'MYS', 'SGP', 'IDN', 'PHL', 'BRN', 'TLS']
 };
 
-// MapControls component
 function MapControls({ map, onRegionSelect }: { map: L.Map | null; onRegionSelect: (region: string) => void }) {
   const regions = [
     { label: 'World', coords: [20, 0, 2] as [number, number, number] },
@@ -99,6 +97,7 @@ export default function IncidentsMap() {
   const [incidentsByCountry, setIncidentsByCountry] = useState<Record<string, Incidents[]>>({});
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     document.body.style.margin = '0';
@@ -147,7 +146,6 @@ export default function IncidentsMap() {
     });
   };
 
-  // Calcul des incidents à afficher
   const displayedIncidents = useMemo(() => {
     if (selectedCountry) {
       return incidentsByCountry[selectedCountry] || [];
@@ -161,7 +159,6 @@ export default function IncidentsMap() {
       });
       return regionIncidents;
     }
-    // Tous les incidents (World)
     return Object.values(incidentsByCountry).flat();
   }, [selectedCountry, selectedRegion, incidentsByCountry]);
 
@@ -190,6 +187,28 @@ export default function IncidentsMap() {
       right: 0,
       bottom: 0
     }}>
+      <button
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        style={{
+          display: 'none',
+          position: 'fixed',
+          top: '16px',
+          left: '16px',
+          zIndex: 1001,
+          background: '#1e293b',
+          color: 'white',
+          border: 'none',
+          borderRadius: '8px',
+          padding: '12px',
+          fontSize: '24px',
+          cursor: 'pointer',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
+        }}
+        className="mobile-menu-btn"
+      >
+        ☰
+      </button>
+
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <div style={{
           width: '280px',
@@ -198,8 +217,29 @@ export default function IncidentsMap() {
           boxShadow: '4px 0 24px rgba(0,0,0,0.3)',
           display: 'flex',
           flexDirection: 'column',
-          borderRight: '1px solid #334155'
-        }}>
+          borderRight: '1px solid #334155',
+          zIndex: 1000
+        }}
+        className="sidebar"
+        data-open={isMobileMenuOpen}>
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            style={{
+              display: 'none',
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              background: 'transparent',
+              color: 'white',
+              border: 'none',
+              fontSize: '28px',
+              cursor: 'pointer',
+              padding: '4px'
+            }}
+            className="mobile-close-btn"
+          >
+            ×
+          </button>
           <div style={{ 
             padding: '24px 20px 20px 20px',
             borderBottom: '1px solid #334155'
@@ -320,7 +360,8 @@ export default function IncidentsMap() {
         color: 'white',
         borderTop: '2px solid #475569',
         boxShadow: '0 -4px 24px rgba(0,0,0,0.3)'
-      }}>
+      }}
+      className="timeline-container">
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -378,6 +419,60 @@ export default function IncidentsMap() {
           <Timeline incidents={displayedIncidents} />
         </div>
       </div>
+      
+      <style>
+        {`
+          @media (max-width: 768px) {
+            .mobile-menu-btn {
+              display: block !important;
+            }
+            
+            .sidebar {
+              position: fixed !important;
+              top: 0;
+              left: -280px;
+              bottom: 0;
+              width: 280px !important;
+              transition: left 0.3s ease;
+              z-index: 1000;
+            }
+            
+            .sidebar[data-open="true"] {
+              left: 0;
+            }
+            
+            .mobile-close-btn {
+              display: block !important;
+            }
+            
+            .timeline-container {
+              height: 120px !important;
+            }
+            
+            .timeline-container > div:first-child {
+              padding: 4px 12px !important;
+            }
+            
+            .timeline-container > div:first-child h3 {
+              font-size: 13px !important;
+            }
+            
+            .timeline-container > div:first-child span {
+              font-size: 11px !important;
+            }
+            
+            .timeline-container > div:first-child button {
+              padding: 6px 12px !important;
+              font-size: 11px !important;
+            }
+            
+            .timeline-container > div:last-child {
+              padding: 4px 12px !important;
+              height: calc(100% - 40px) !important;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 }
