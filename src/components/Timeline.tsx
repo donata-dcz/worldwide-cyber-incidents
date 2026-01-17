@@ -4,16 +4,14 @@ import type { TimelineProps } from "../types/incidents"
 export default function Timeline({ incidents }: TimelineProps) {
   const sortedIncidents = useMemo(() => {
     if (!incidents || incidents.length === 0) return [];
-    
-    // Filter out incidents with invalid dates
+
     const validIncidents = incidents.filter(inc => {
       const dateStr = inc.event.startDate || inc.event.date;
       if (!dateStr) return false;
       
       const timestamp = new Date(dateStr).getTime();
       if (isNaN(timestamp)) return false;
-      
-      // Filter out dates that are clearly wrong (before 2000 or after 2030)
+
       const year = new Date(dateStr).getFullYear();
       if (year < 2000 || year > 2030) return false;
       
@@ -76,8 +74,7 @@ export default function Timeline({ incidents }: TimelineProps) {
         height: "100%", 
         display: "flex", 
         alignItems: "center", 
-        justifyContent: "center",
-        background: "#1a1a1a"
+        justifyContent: "center"
       }}>
         <p style={{ color: "#888" }}>No incidents to display</p>
       </div>
@@ -90,11 +87,9 @@ export default function Timeline({ incidents }: TimelineProps) {
       height: "100%", 
       width: "100%",
       padding: "20px 60px",
-      background: "#1a1a1a",
       display: "flex",
       alignItems: "center"
     }}>
-      {/* Timeline axis */}
       <div style={{
         position: "absolute",
         top: "50%",
@@ -105,8 +100,7 @@ export default function Timeline({ incidents }: TimelineProps) {
         transform: "translateY(-50%)",
         borderRadius: "2px"
       }} />
-      
-      {/* Date labels */}
+
       {dateRange.min && dateRange.max && (
         <>
           <div style={{
@@ -131,8 +125,7 @@ export default function Timeline({ incidents }: TimelineProps) {
           </div>
         </>
       )}
-      
-      {/* Incident markers */}
+
       <div style={{
         position: "absolute",
         left: "60px",
@@ -214,6 +207,13 @@ export default function Timeline({ incidents }: TimelineProps) {
           }
           .timeline-marker:hover + .timeline-tooltip {
             opacity: 1 !important;
+          }
+          
+          @media (max-width: 768px) {
+            .timeline-marker {
+              width: 10px !important;
+              height: 10px !important;
+            }
           }
         `}
       </style>

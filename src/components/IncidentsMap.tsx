@@ -115,6 +115,7 @@ export default function IncidentsMap() {
   const handleRegionSelect = useCallback((region: string) => {
     setSelectedCountry(null);
     setSelectedRegion(region === 'World' ? null : region);
+    setIsMobileMenuOpen(false);
   }, []);
 
   const countryStyle = (feature: any): PathOptions => {
@@ -359,7 +360,8 @@ export default function IncidentsMap() {
         background: 'linear-gradient(180deg, #1e293b 0%, #0f172a 100%)',
         color: 'white',
         borderTop: '2px solid #475569',
-        boxShadow: '0 -4px 24px rgba(0,0,0,0.3)'
+        boxShadow: '0 -4px 24px rgba(0,0,0,0.3)',
+        overflow: 'hidden'
       }}
       className="timeline-container">
         <div style={{
@@ -415,7 +417,7 @@ export default function IncidentsMap() {
             </button>
           )}
         </div>
-        <div style={{ padding: '8px 24px', height: 'calc(100% - 50px)' }}>
+        <div style={{ padding: '8px 24px', height: 'calc(100% - 50px)', background: 'transparent' }}>
           <Timeline incidents={displayedIncidents} />
         </div>
       </div>
@@ -451,6 +453,7 @@ export default function IncidentsMap() {
             
             .timeline-container > div:first-child {
               padding: 4px 12px !important;
+              flex-wrap: wrap;
             }
             
             .timeline-container > div:first-child h3 {
@@ -467,8 +470,13 @@ export default function IncidentsMap() {
             }
             
             .timeline-container > div:last-child {
-              padding: 4px 12px !important;
+              padding: 4px 20px !important;
               height: calc(100% - 40px) !important;
+            }
+            
+            /* Reduce timeline padding on mobile */
+            .timeline-container > div:last-child > div {
+              padding: 10px 20px !important;
             }
           }
         `}
