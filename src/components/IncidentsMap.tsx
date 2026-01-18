@@ -161,7 +161,7 @@ export default function IncidentsMap() {
       bottom: 0
     }}>
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        <nav 
+        <div
           style={{
             width: '280px',
             background: "#1e293b",
@@ -186,7 +186,7 @@ export default function IncidentsMap() {
               Worldwide Cyber Incidents
             </h1>
           </div>
-          <section style={{ padding: '20px' }} aria-labelledby="nav-heading">
+          <div style={{ padding: '20px' }} aria-labelledby="nav-heading">
             <h2 id="nav-heading" style={{ 
               fontSize: '16px', 
               fontWeight: '600', 
@@ -196,8 +196,8 @@ export default function IncidentsMap() {
               Navigation
             </h2>
             <MapControls map={map} onRegionSelect={handleRegionSelect} />
-          </section>
-          <section style={{ 
+          </div>
+          <div style={{ 
             padding: '20px',
             borderTop: '1px solid #334155'
           }}
@@ -297,8 +297,8 @@ export default function IncidentsMap() {
                 Clear filters ({selectedAttackTypes.length})
               </button>
             )}
-          </section>
-          <section style={{ 
+          </div>
+          <div style={{ 
             padding: '20px',
             borderTop: '1px solid #334155'
           }}
@@ -349,9 +349,9 @@ export default function IncidentsMap() {
                 </div>
               </div>
             </div>
-          </section>
-        </nav>
-        <main style={{ flex: 1, position: 'relative' }} role="main" aria-label="Interactive world map">
+          </div>
+        </div>
+        <div style={{ flex: 1, position: 'relative' }} role="main" aria-label="Interactive world map">
           <MapContainer
             key={selectedAttackTypes.join(',')}
             ref={setMap}
@@ -376,9 +376,9 @@ export default function IncidentsMap() {
               onEachFeature={onEachCountry}
             />
           </MapContainer>
-        </main>
+        </div>
       </div>
-      <aside style={{
+      <div style={{
         height: '180px',
         background: 'linear-gradient(180deg, #1e293b 0%, #0f172a 100%)',
         color: 'white',
@@ -409,7 +409,7 @@ export default function IncidentsMap() {
         <div style={{ padding: '8px 24px', height: 'calc(100% - 50px)' }}>
           <Timeline incidents={displayedIncidents} />
         </div>
-      </aside>
+      </div>
     </div>
   );
 }
