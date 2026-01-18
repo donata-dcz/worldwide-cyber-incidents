@@ -251,7 +251,7 @@ export default function IncidentsMap() {
                 >
                   <input
                     type="checkbox"
-                    checked={isAllSelected}
+                    checked={selectedAttackTypes.length === 12}
                     onChange={toggleAllTypes}
                     style={{ cursor: 'pointer' }}
                   />
@@ -270,7 +270,7 @@ export default function IncidentsMap() {
                   >
                     <input
                       type="checkbox"
-                      checked={selectedAttackTypes.includes(type)}
+                      checked={isAllSelected}
                       onChange={() => toggleAttackType(type)}
                       style={{ cursor: 'pointer' }}
                     />
