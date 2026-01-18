@@ -161,19 +161,16 @@ export default function IncidentsMap() {
       bottom: 0
     }}>
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        <div
-          style={{
-            width: '280px',
-            background: "#1e293b",
-            color: 'white',
-            boxShadow: '4px 0 24px rgba(0,0,0,0.3)',
-            display: 'flex',
-            flexDirection: 'column',
-            borderRight: '1px solid #334155',
-            overflowY: 'auto'
-          }}
-          aria-label="Main navigation"
-        >
+        <div style={{
+          width: '280px',
+          background: "#1e293b",
+          color: 'white',
+          boxShadow: '4px 0 24px rgba(0,0,0,0.3)',
+          display: 'flex',
+          flexDirection: 'column',
+          borderRight: '1px solid #334155',
+          overflowY: 'auto'
+        }}>
           <div style={{ 
             padding: '24px 20px 20px 20px',
             borderBottom: '1px solid #334155'
@@ -186,8 +183,9 @@ export default function IncidentsMap() {
               Worldwide Cyber Incidents
             </h1>
           </div>
-          <div style={{ padding: '20px' }} aria-labelledby="nav-heading">
-            <h2 id="nav-heading" style={{ 
+          
+          <div style={{ padding: '20px' }}>
+            <h2 style={{ 
               fontSize: '16px', 
               fontWeight: '600', 
               margin: '0 0 12px 0',
@@ -200,15 +198,14 @@ export default function IncidentsMap() {
           <div style={{ 
             padding: '20px',
             borderTop: '1px solid #334155'
-          }}
-          aria-labelledby="filter-heading">
+          }}>
             <div style={{ 
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
               marginBottom: '12px'
             }}>
-              <h2 id="filter-heading" style={{ 
+              <h2 style={{ 
                 fontSize: '16px', 
                 fontWeight: '600', 
                 margin: 0,
@@ -251,8 +248,8 @@ export default function IncidentsMap() {
                 >
                   <input
                     type="checkbox"
-                    checked={isAllSelected}
-                    onChange={toggleAllTypes}
+                    checked={selectedAttackTypes.length === 12}
+                    onChange={() => toggleAllTypes()}
                     style={{ cursor: 'pointer' }}
                   />
                   <span>All Types</span>
@@ -301,9 +298,8 @@ export default function IncidentsMap() {
           <div style={{ 
             padding: '20px',
             borderTop: '1px solid #334155'
-          }}
-          aria-labelledby="legend-heading">
-            <h2 id="legend-heading" style={{ 
+          }}>
+            <h2 style={{ 
               fontSize: '16px', 
               fontWeight: '600', 
               margin: '0 0 12px 0',
@@ -351,7 +347,7 @@ export default function IncidentsMap() {
             </div>
           </div>
         </div>
-        <div style={{ flex: 1, position: 'relative' }} role="main" aria-label="Interactive world map">
+        <div style={{ flex: 1, position: 'relative' }}>
           <MapContainer
             key={selectedAttackTypes.join(',')}
             ref={setMap}
@@ -384,9 +380,7 @@ export default function IncidentsMap() {
         color: 'white',
         borderTop: '2px solid #475569',
         boxShadow: '0 -4px 24px rgba(0,0,0,0.3)'
-      }}
-      role="complementary"
-      aria-labelledby="timeline-heading">
+      }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -394,7 +388,7 @@ export default function IncidentsMap() {
           padding: '8px 24px',
           borderBottom: '1px solid #334155'
         }}>
-          <h2 id="timeline-heading" style={{ fontSize: '16px', fontWeight: '600', margin: 0 }}>
+          <h2 style={{ fontSize: '16px', fontWeight: '600', margin: 0 }}>
             {timelineTitle}
             <span style={{ 
               fontSize: '13px', 
